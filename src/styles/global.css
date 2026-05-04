@@ -1,0 +1,75 @@
+:root {
+  --xl-green: #2e7d32;
+  --xl-blue: #1976d2;
+  --xl-yellow: #ffb300;
+  --xl-brown: #8d6e63;
+  --xl-bg: #f5f7f2;
+  --xl-surface: rgba(255, 255, 255, 0.86);
+  --xl-border: rgba(46, 125, 50, 0.12);
+  --xl-text: #173024;
+  --xl-muted: #5f7268;
+  --xl-shadow: 0 16px 40px rgba(23, 48, 36, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: var(--xl-text);
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at top left, rgba(46, 125, 50, 0.12), transparent 28%),
+    radial-gradient(circle at top right, rgba(25, 118, 210, 0.08), transparent 24%),
+    linear-gradient(180deg, #fbfcfa 0%, #eef4ea 100%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.container {
+  width: min(1200px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.page-shell {
+  min-height: 100vh;
+}
+
+.section-card {
+  background: var(--xl-surface);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--xl-border);
+  border-radius: 20px;
+  box-shadow: var(--xl-shadow);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.25s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: min(100% - 20px, 1200px);
+  }
+}
