@@ -234,7 +234,7 @@ export const products: ProductItem[] = [
 
 export const tourismProducts: ServiceItem[] = [
   { title: '耕读研学 1 日体验', description: '田间课程 + 村史讲解 + 劳动实践', status: '可预约', price: '￥99/人', image: 'https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?auto=format&fit=crop&w=900&q=80' },
-  { title: '骑马体验线路', description: '乡村轻户外体验，适合亲子与研学团体', status: '热门项目', price: '￥128/人', image: 'https://images.unsplash.com/photo-1454557278752-fc16a8a3d38d?auto=format&fit=crop&w=900&q=80' },
+    { title: '骑马体验线路', description: '乡村轻户外体验，适合亲子与研学团体', status: '热门项目', price: '￥128/人', image: new URL('../../图片/骑马体验线路.png', import.meta.url).href },
   { title: '东巴非遗工坊', description: '体验造纸、拓印、纹样创作', status: '支持团建', price: '￥168/人', image: 'https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=900&q=80' }
 ]
 
@@ -302,7 +302,7 @@ export const feedbackExamples = [
 
 export const practiceBases: PracticeBase[] = [
   { name: '美泉村实践基地', location: '丽江', feature: '数字治理与雪桃助农', image: 'https://images.unsplash.com/photo-1504851149312-7a075b496cc7?auto=format&fit=crop&w=900&q=80' },
-  { name: '白沙古镇非遗基地', location: '丽江', feature: '东巴文化与文创转化', image: 'https://images.unsplash.com/photo-1516306580123-e6e52b1b4bdb?auto=format&fit=crop&w=900&q=80' },
+  { name: '白沙古镇非遗基地', location: '丽江', feature: '东巴文化与文创转化', image: new URL('../../图片/白沙古镇非遗基地.png', import.meta.url).href },
   { name: '双廊旅居基地', location: '大理', feature: '文旅体验与社区共建', image: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=900&q=80' }
 ]
 

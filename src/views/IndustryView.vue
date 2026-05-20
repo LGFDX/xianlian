@@ -226,6 +226,7 @@ function handleClearCart() {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
+  align-items: start;
 }
 
 .product-card,
@@ -236,8 +237,9 @@ function handleClearCart() {
 .product-card img,
 .case-card img {
   width: 100%;
-  height: 220px;
-  object-fit: cover;
+  height: auto;
+  display: block;
+  object-fit: contain;
 }
 
 .body {

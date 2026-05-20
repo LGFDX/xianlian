@@ -10,7 +10,7 @@
       </router-link>
 
       <nav class="desktop-nav">
-        <router-link v-for="item in menuItems" :key="item.path" :to="item.path">
+        <router-link v-for="item in navItems" :key="item.path" :to="item.path">
           {{ item.label }}
         </router-link>
       </nav>
@@ -19,8 +19,10 @@
         <el-select v-model="roleModel" class="role-select" size="small">
           <el-option v-for="role in roles" :key="role" :label="role" :value="role" />
         </el-select>
-        <el-button text @click="$router.push('/home/auth')">登录</el-button>
-        <el-button type="success" plain @click="$router.push('/home/auth')">注册</el-button>
+        <template v-if="!isLoggedIn">
+          <el-button text @click="$router.push('/home/auth')">登录</el-button>
+          <el-button type="success" plain @click="$router.push('/home/auth')">注册</el-button>
+        </template>
       </div>
 
       <div class="mobile-actions">
@@ -33,10 +35,10 @@
         <el-select v-model="roleModel" class="role-select-mobile" placeholder="选择角色">
           <el-option v-for="role in roles" :key="role" :label="role" :value="role" />
         </el-select>
-        <router-link v-for="item in menuItems" :key="item.path" :to="item.path" class="drawer-link" @click="drawerVisible = false">
+        <router-link v-for="item in navItems" :key="item.path" :to="item.path" class="drawer-link" @click="drawerVisible = false">
           {{ item.label }}
         </router-link>
-        <el-button type="success" class="drawer-link-button" @click="$router.push('/home/auth')">登录 / 注册</el-button>
+        <el-button v-if="!isLoggedIn" type="success" class="drawer-link-button" @click="$router.push('/home/auth')">登录 / 注册</el-button>
       </div>
     </el-drawer>
   </header>
@@ -44,10 +46,14 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
 import { roles } from '@/data/mock'
 import { useAppStore } from '@/stores/app'
+import { useUserStore } from '@/stores/user'
 
 const appStore = useAppStore()
+const userStore = useUserStore()
+const { isLoggedIn } = storeToRefs(userStore)
 const drawerVisible = ref(false)
 const scrolled = ref(false)
 
@@ -59,6 +65,12 @@ const menuItems = [
   { label: '校地实践', path: '/home/practice' },
   { label: '资源链接', path: '/home/resources' }
 ]
+
+const navItems = computed(() => {
+  return isLoggedIn.value
+    ? [...menuItems, { label: '个人中心', path: '/profile' }]
+    : menuItems
+})
 
 const roleModel = computed({
   get: () => appStore.currentRole,

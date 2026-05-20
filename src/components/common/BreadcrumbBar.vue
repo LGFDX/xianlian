@@ -22,6 +22,7 @@ const routeMap: Record<string, { label: string; path?: string }[]> = {
   '/home/practice': [{ label: '校地实践' }],
   '/home/resources': [{ label: '资源链接' }],
   '/home/auth': [{ label: '身份登录' }],
+  '/profile': [{ label: '个人中心' }],
   '/admin/dashboard': [{ label: '后台管理' }, { label: '数据总览' }],
   '/admin/users': [{ label: '后台管理' }, { label: '用户管理' }],
   '/admin/content': [{ label: '后台管理' }, { label: '内容管理' }],

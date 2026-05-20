@@ -101,9 +101,9 @@
               <el-input v-model="form.organization" placeholder="村委会 / 学校 / 企业" />
             </el-form-item>
 
-            <button class="submit-button" type="button" @click="submit">
+            <el-button class="submit-button" type="success" :loading="isSubmitting" @click="submit">
               {{ submitLabel }}
-            </button>
+            </el-button>
           </el-form>
         </div>
       </section>
@@ -112,9 +112,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 import { useAppStore, type UserRole } from '@/stores/app'
+import { useUserStore } from '@/stores/user'
 
 type AuthMode = '登录' | '注册'
 type IdentityKey = 'village' | 'university'
@@ -161,9 +163,11 @@ const identityCards: IdentityCard[] = [
 const router = useRouter()
 const route = useRoute()
 const appStore = useAppStore()
+const userStore = useUserStore()
 
 const mode = ref<AuthMode>('登录')
 const isReady = ref(false)
+const isSubmitting = ref(false)
 const selectedIdentityKey = ref<IdentityKey>(resolveIdentity(route.query.identity))
 
 const form = reactive({
@@ -175,7 +179,7 @@ const form = reactive({
 })
 
 const activeIdentity = computed(() => identityCards.find(card => card.key === selectedIdentityKey.value) ?? identityCards[0])
-const submitLabel = computed(() => `${mode.value}并进入${activeIdentity.value.flowLabel}`)
+const submitLabel = computed(() => `${mode.value}并进入个人中心`)
 
 function resolveIdentity(value: unknown): IdentityKey {
   if (Array.isArray(value)) {
@@ -197,12 +201,32 @@ function selectIdentity(identityKey: IdentityKey) {
   }
 
   syncRole(identityKey)
-  router.push({ path: '/home/auth', query: { identity: identityKey } })
+  router.push({ path: '/home/auth', query: { ...route.query, identity: identityKey } })
 }
 
-function submit() {
-  appStore.toggleLogin()
-  void router.push(activeIdentity.value.nextRoute)
+async function submit() {
+  if (isSubmitting.value) {
+    return
+  }
+
+  isSubmitting.value = true
+
+  try {
+    await nextTick()
+
+    const isValid = userStore.login(form.phone.trim(), form.password)
+
+    if (!isValid) {
+      ElMessage.error('账号或密码错误，请重新输入')
+      return
+    }
+
+    appStore.setRole(activeIdentity.value.role)
+
+    await router.replace('/profile')
+  } finally {
+    isSubmitting.value = false
+  }
 }
 
 // Keep the selected identity tied to the URL so the flow can be shared or restored.
@@ -223,7 +247,7 @@ onMounted(() => {
   })
 
   if (!route.query.identity) {
-    router.replace({ path: '/home/auth', query: { identity: selectedIdentityKey.value } })
+    router.replace({ path: '/home/auth', query: { ...route.query, identity: selectedIdentityKey.value } })
   }
 })
 

@@ -1,9 +1,10 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import PublicLayout from '@/layouts/PublicLayout.vue'
 import AdminLayout from '@/layouts/AdminLayout.vue'
+import { useUserStore } from '@/stores/user'
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   scrollBehavior() {
     return { top: 0 }
   },
@@ -22,8 +23,20 @@ const router = createRouter({
         { path: 'talent', name: 'talent', component: () => import('@/views/TalentView.vue') },
         { path: 'governance', name: 'governance', component: () => import('@/views/GovernanceView.vue') },
         { path: 'practice', name: 'practice', component: () => import('@/views/PracticeView.vue') },
-        { path: 'resources', name: 'resources', component: () => import('@/views/ResourcesView.vue') },
+        { path: 'resources', name: 'resources', component: () => import('@/views/ResourceLink.vue') },
         { path: 'auth', name: 'auth', component: () => import('@/views/LoginPage.vue') }
+      ]
+    },
+    {
+      path: '/profile',
+      component: PublicLayout,
+      children: [
+        {
+          path: '',
+          name: 'profile',
+          component: () => import('@/views/Profile/ProfilePage.vue'),
+          meta: { requiresAuth: true }
+        }
       ]
     },
     { path: '/industry', redirect: '/home/industry' },
@@ -47,6 +60,24 @@ const router = createRouter({
     },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('@/views/NotFoundView.vue') }
   ]
+})
+
+router.beforeEach(to => {
+  const userStore = useUserStore()
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth === true)
+
+  if (requiresAuth && !userStore.isLoggedIn) {
+    return {
+      path: '/home/auth',
+      query: { redirect: to.fullPath }
+    }
+  }
+
+  if (to.path === '/home/auth' && userStore.isLoggedIn) {
+    return { path: '/profile' }
+  }
+
+  return true
 })
 
 export default router

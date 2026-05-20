@@ -301,11 +301,13 @@ import { coreStats, heroSlides, newsList, partners, pilotVillages, chainEntries 
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
   gap: 18px;
+  align-items: start;
 }
 
 .news-panel,
 .partner-panel {
   padding: 22px;
+  align-self: start;
 }
 
 .news-item {
@@ -325,22 +327,19 @@ import { coreStats, heroSlides, newsList, partners, pilotVillages, chainEntries 
 
 .partner-strip {
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(180px, 1fr);
-  gap: 12px;
-  overflow-x: auto;
-  padding-bottom: 6px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
 }
 
 .partner-item {
-  min-height: 110px;
-  border-radius: 18px;
+  min-height: 132px;
+  border-radius: 20px;
   border: 1px solid rgba(46, 125, 50, 0.08);
   background: linear-gradient(180deg, rgba(46, 125, 50, 0.08), rgba(25, 118, 210, 0.05));
   display: grid;
   place-items: center;
   text-align: center;
-  padding: 16px;
+  padding: 20px 18px;
 }
 
 .partner-item strong {
@@ -359,6 +358,10 @@ import { coreStats, heroSlides, newsList, partners, pilotVillages, chainEntries 
   .split-layout {
     grid-template-columns: 1fr 1fr;
   }
+
+  .partner-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 768px) {
@@ -374,6 +377,10 @@ import { coreStats, heroSlides, newsList, partners, pilotVillages, chainEntries 
   .chain-grid,
   .village-grid,
   .split-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .partner-strip {
     grid-template-columns: 1fr;
   }
 
