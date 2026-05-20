@@ -4,7 +4,7 @@ import AdminLayout from '@/layouts/AdminLayout.vue'
 import { useUserStore } from '@/stores/user'
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   scrollBehavior() {
     return { top: 0 }
   },
